@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
 	_ "xhylblog/routers"
 	"xhylblog/utils"
@@ -14,14 +13,17 @@ func main() {
 	utils.InitLog()
 
 	//swagger生成
-	if beego.BConfig.RunMode == "dev" {
-		beego.BConfig.WebConfig.DirectoryIndex = true
-		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
-	}
+	utils.InitSwagger()
 
-	//mysql注册
-	orm.RegisterDriver("mysql",orm.DRMySQL)
-	orm.RegisterDataBase("default", "mysql", beego.AppConfig.String("sqlconn"),30,30)
+	//初始化mysql数据库
+	utils.InitMysql()
+
+	//跨域
+	utils.CrossRequestFilter()
+
+	//接口请求Token过滤器
+	//访问接口前验证token
+	utils.TokenFilter()
 
 	beego.Run()
 }

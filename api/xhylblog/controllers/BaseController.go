@@ -18,6 +18,13 @@ func (c *BaseController) Ok(rs interface{}) {
 	c.ServeJSON()
 }
 
+//返回成功
+func (c *BaseController) RequestError(rs interface{}) {
+	c.Ctx.Output.SetStatus(400)
+	c.Data["json"] = models.RequestError(rs)
+	c.ServeJSON()
+}
+
 //认证失败
 func (c *BaseController) AuthErr() {
 	c.Ctx.Output.SetStatus(401)

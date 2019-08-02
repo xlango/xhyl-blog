@@ -8,14 +8,13 @@ import (
 	"xhylblog/models"
 )
 
-//  UserController operations for User
-type UserController struct {
+//  ArticleController operations for Article
+type ArticleController struct {
 	BaseController
 }
 
 // URLMapping ...
-func (c *UserController) URLMapping() {
-	c.Mapping("Login", c.Login)
+func (c *ArticleController) URLMapping() {
 	c.Mapping("Post", c.Post)
 	c.Mapping("GetOne", c.GetOne)
 	c.Mapping("GetAll", c.GetAll)
@@ -23,36 +22,17 @@ func (c *UserController) URLMapping() {
 	c.Mapping("Delete", c.Delete)
 }
 
-
-// Login ...
-// @Title 用户登录获取token
-// @Description 用户登录获取token
-// @Param	body		body 	models.User	true		"body for User content"
-// @Success 201 {int} models.User
-// @Failure 403 body is empty
-// @router /login [post]
-func (c *UserController) Login() {
-	var v models.User
-	c.JsonParam(&v)
-	if token, err := models.Login(v.Username,v.Password); err == nil {
-		c.Ok(token)
-	} else {
-		c.RequestError("账号或密码错误！")
-	}
-}
-
-
 // Post ...
 // @Title Post
-// @Description create User
-// @Param	body		body 	models.User	true		"body for User content"
-// @Success 201 {int} models.User
+// @Description create Article
+// @Param	body		body 	models.Article	true		"body for Article content"
+// @Success 201 {int} models.Article
 // @Failure 403 body is empty
 // @router / [post]
-func (c *UserController) Post() {
-	var v models.User
+func (c *ArticleController) Post() {
+	var v models.Article
 	c.JsonParam(&v)
-	if _, err := models.AddUser(&v); err == nil {
+	if _, err := models.AddArticle(&v); err == nil {
 		c.Ok(v)
 	} else {
 		c.Error(err.Error())
@@ -61,15 +41,15 @@ func (c *UserController) Post() {
 
 // GetOne ...
 // @Title Get One
-// @Description get User by id
+// @Description get Article by id
 // @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.User
+// @Success 200 {object} models.Article
 // @Failure 403 :id is empty
 // @router /:id [get]
-func (c *UserController) GetOne() {
+func (c *ArticleController) GetOne() {
 	idStr := c.Ctx.Input.Param(":id")
 	id, _ := strconv.ParseInt(idStr, 0, 64)
-	v, err := models.GetUserById(id)
+	v, err := models.GetArticleById(id)
 	if err != nil {
 		c.Error(err.Error())
 	} else {
@@ -79,17 +59,17 @@ func (c *UserController) GetOne() {
 
 // GetAll ...
 // @Title Get All
-// @Description get User
+// @Description get Article
 // @Param	query	query	string	false	"Filter. e.g. col1:v1,col2:v2 ..."
 // @Param	fields	query	string	false	"Fields returned. e.g. col1,col2 ..."
 // @Param	sortby	query	string	false	"Sorted-by fields. e.g. col1,col2 ..."
 // @Param	order	query	string	false	"Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc ..."
 // @Param	limit	query	string	false	"Limit the size of result set. Must be an integer"
 // @Param	offset	query	string	false	"Start position of result set. Must be an integer"
-// @Success 200 {object} models.User
+// @Success 200 {object} models.Article
 // @Failure 403
 // @router / [get]
-func (c *UserController) GetAll() {
+func (c *ArticleController) GetAll() {
 	var fields []string
 	var sortby []string
 	var order []string
@@ -131,7 +111,7 @@ func (c *UserController) GetAll() {
 		}
 	}
 
-	l, err := models.GetAllUser(query, fields, sortby, order, offset, limit)
+	l, err := models.GetAllArticle(query, fields, sortby, order, offset, limit)
 	if err != nil {
 		c.Error(err.Error())
 	} else {
@@ -141,35 +121,35 @@ func (c *UserController) GetAll() {
 
 // Put ...
 // @Title Put
-// @Description update the User
+// @Description update the Article
 // @Param	id		path 	string	true		"The id you want to update"
-// @Param	body		body 	models.User	true		"body for User content"
-// @Success 200 {object} models.User
+// @Param	body		body 	models.Article	true		"body for Article content"
+// @Success 200 {object} models.Article
 // @Failure 403 :id is not int
 // @router /:id [put]
-func (c *UserController) Put() {
+func (c *ArticleController) Put() {
 	idStr := c.Ctx.Input.Param(":id")
 	id, _ := strconv.ParseInt(idStr, 0, 64)
-	v := models.User{Id: id}
+	v := models.Article{Id: id}
 	json.Unmarshal(c.Ctx.Input.RequestBody, &v)
-	if err := models.UpdateUserById(&v); err == nil {
+	if err := models.UpdateArticleById(&v); err == nil {
 		c.Ok("OK")
 	} else {
 		c.Error(err.Error())
-}
+	}
 }
 
 // Delete ...
 // @Title Delete
-// @Description delete the User
+// @Description delete the Article
 // @Param	id		path 	string	true		"The id you want to delete"
 // @Success 200 {string} delete success!
 // @Failure 403 id is empty
 // @router /:id [delete]
-func (c *UserController) Delete() {
+func (c *ArticleController) Delete() {
 	idStr := c.Ctx.Input.Param(":id")
 	id, _ := strconv.ParseInt(idStr, 0, 64)
-	if err := models.DeleteUser(id); err == nil {
+	if err := models.DeleteArticle(id); err == nil {
 		c.Ok("OK")
 	} else {
 		c.Error(err.Error())

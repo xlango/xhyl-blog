@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/orm"
 
@@ -23,5 +24,16 @@ func InitLog()  {
 
 //初始化mysql数据库
 func InitMysql()  {
-	orm.RegisterDataBase("default","mysql","root:123456@tcp(127.0.0.1:3306)/idata?charset=utf8")
+	//mysql注册
+	orm.RegisterDriver("mysql",orm.DRMySQL)
+	orm.RegisterDataBase("default", "mysql", beego.AppConfig.String("sqlconn"),30,30)
+}
+
+//初始化swagger
+func InitSwagger()  {
+	//swagger生成
+	if beego.BConfig.RunMode == "dev" {
+		beego.BConfig.WebConfig.DirectoryIndex = true
+		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
+	}
 }

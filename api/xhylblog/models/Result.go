@@ -18,6 +18,14 @@ func Ok(rs interface{})  Result{
 	}
 }
 
+//请求失败，400
+func RequestError(rs interface{})  Result{
+	return Result{
+		Code:400,
+		Msg:rs,
+	}
+}
+
 //认证失败，401
 func AuthErr()  Result{
 	return Result{

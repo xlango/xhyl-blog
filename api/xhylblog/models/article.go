@@ -3,55 +3,48 @@ package models
 import (
 	"errors"
 	"fmt"
-	"github.com/astaxie/beego/orm"
 	"reflect"
 	"strings"
-	"time"
-	"xhylblog/utils"
+
+	"github.com/astaxie/beego/orm"
 )
 
-type User struct {
-	Id       int64
-	Name     string    `orm:"size(255)"`
-	Username string    `orm:"size(255)"`
-	Password string    `orm:"size(255)"`
-	Birthday time.Time `orm:"type(datetime)"`
-	Gender   int `orm:"size(11)"`
-	Tel      string `orm:"size(255)"`
-	Email    string `orm:"size(255)"`
-	Address  string `orm:"size(255)"`
+type Article struct {
+	Id      int64
+	Title   string `orm:"size(255)"`
+	Content string `orm:"size(255)"`
+	Image   string `orm:"size(255)"`
 }
 
 func init() {
-	//orm.RegisterModel(new(User))
-	orm.RegisterModelWithPrefix("tb_", new(User))
+	orm.RegisterModelWithPrefix("tb_", new(Article))
 }
 
-// AddUser insert a new User into database and returns
+// AddArticle insert a new Article into database and returns
 // last inserted Id on success.
-func AddUser(m *User) (id int64, err error) {
+func AddArticle(m *Article) (id int64, err error) {
 	o := orm.NewOrm()
 	id, err = o.Insert(m)
 	return
 }
 
-// GetUserById retrieves User by Id. Returns error if
+// GetArticleById retrieves Article by Id. Returns error if
 // Id doesn't exist
-func GetUserById(id int64) (v *User, err error) {
+func GetArticleById(id int64) (v *Article, err error) {
 	o := orm.NewOrm()
-	v = &User{Id: id}
-	if err = o.QueryTable(new(User)).Filter("Id", id).RelatedSel().One(v); err == nil {
+	v = &Article{Id: id}
+	if err = o.QueryTable(new(Article)).Filter("Id", id).RelatedSel().One(v); err == nil {
 		return v, nil
 	}
 	return nil, err
 }
 
-// GetAllUser retrieves all User matches certain condition. Returns empty list if
+// GetAllArticle retrieves all Article matches certain condition. Returns empty list if
 // no records exist
-func GetAllUser(query map[string]string, fields []string, sortby []string, order []string,
+func GetAllArticle(query map[string]string, fields []string, sortby []string, order []string,
 	offset int64, limit int64) (ml []interface{}, err error) {
 	o := orm.NewOrm()
-	qs := o.QueryTable(new(User))
+	qs := o.QueryTable(new(Article))
 	// query k=v
 	for k, v := range query {
 		// rewrite dot-notation to Object__Attribute
@@ -97,7 +90,7 @@ func GetAllUser(query map[string]string, fields []string, sortby []string, order
 		}
 	}
 
-	var l []User
+	var l []Article
 	qs = qs.OrderBy(sortFields...).RelatedSel()
 	if _, err = qs.Limit(limit, offset).All(&l, fields...); err == nil {
 		if len(fields) == 0 {
@@ -120,11 +113,11 @@ func GetAllUser(query map[string]string, fields []string, sortby []string, order
 	return nil, err
 }
 
-// UpdateUser updates User by Id and returns error if
+// UpdateArticle updates Article by Id and returns error if
 // the record to be updated doesn't exist
-func UpdateUserById(m *User) (err error) {
+func UpdateArticleById(m *Article) (err error) {
 	o := orm.NewOrm()
-	v := User{Id: m.Id}
+	v := Article{Id: m.Id}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {
 		var num int64
@@ -135,28 +128,17 @@ func UpdateUserById(m *User) (err error) {
 	return
 }
 
-// DeleteUser deletes User by Id and returns error if
+// DeleteArticle deletes Article by Id and returns error if
 // the record to be deleted doesn't exist
-func DeleteUser(id int64) (err error) {
+func DeleteArticle(id int64) (err error) {
 	o := orm.NewOrm()
-	v := User{Id: id}
+	v := Article{Id: id}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {
 		var num int64
-		if num, err = o.Delete(&User{Id: id}); err == nil {
+		if num, err = o.Delete(&Article{Id: id}); err == nil {
 			fmt.Println("Number of records deleted in database:", num)
 		}
-	}
-	return
-}
-
-//登录获取token
-func  Login(username string,password string) (token string,err error) {
-	o := orm.NewOrm()
-	v:=User{}
-	if err = o.QueryTable(new(User)).Filter("Username", username).Filter("Password",password).RelatedSel().One(&v); err == nil {
-		tokenString := utils.GenerateToken(86400, v.Username)
-		return  tokenString,nil
 	}
 	return
 }

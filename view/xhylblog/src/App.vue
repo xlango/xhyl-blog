@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <add-blog></add-blog>
+    <router-link to="/">Home</router-link>
+    <router-link to="/article/add">添加</router-link>
+    <router-view></router-view> 
   </div>
 </template>
 
 <script>
-import AddBlog from './components/AddBlog'
-
 
 export default {
   name: 'App',
   components: {
-    AddBlog
+    
   }
 }
 </script>
