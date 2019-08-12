@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <router-link to="/">Home</router-link>
-    <router-link to="/article/add">添加</router-link>
     <router-view></router-view> 
   </div>
 </template>
@@ -21,8 +19,7 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  /* color: #eceef0; */
+  
 }
 </style>

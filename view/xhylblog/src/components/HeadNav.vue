@@ -1,0 +1,84 @@
+<template>
+  <div id="head-nav">
+    <div class="container-fluid dev-header" >
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-1"><img style="width:130px;height:50px;" src="@/assets/xhyl.png"></div>
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
+          <div class="container" style="font-size: 16px;color:rgba(40, 40, 40, 0.7);">
+            <div class="row">
+              <div class="col-md-1"><router-link to='/' tag="div" exact><div>首页</div></router-link></div>
+              <div class="col-md-1"><router-link to='/article/add' tag="div" exact><div>文章</div></router-link></div>
+              <div class="col-md-1"><router-link to='/a' tag="div" exact><div>提问</div></router-link></div>
+              <div class="col-md-1"><router-link to='/b' tag="div" exact><div>相册</div></router-link></div>
+              <div class="col-md-1"><router-link to='/b' tag="div" exact><div>归档</div></router-link></div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-md-1">文章</div>
+        <div class="col-md-1">提问</div>
+        <div class="col-md-1">相册</div> -->
+        <div class="col-lg-2">
+          <div class="container" style="font-size: 14px;color:rgb(53, 184, 245);">
+            <div class="row">
+              <div class="col-md-2">
+                <router-link to='/login' tag="span" exact><span>登录</span></router-link>
+                <b style="color:#000;">•</b>
+                <router-link to='/register' tag="span" exact><span>注册</span></router-link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+  </div>
+</template>
+<script>
+
+export default {
+  name: "head-nav",
+  data() {
+  return {
+  }
+},
+  methods:{
+    //点击导航样式改变
+    changeStatus(e){
+      localStorage.setItem('indexNav',e);
+      this.isActive=e;
+      console.log("点击了：",this.isActive);
+      console.log("存储：",localStorage.getItem('indexNav'));
+      },
+  },
+};
+
+
+</script>
+
+<style scoped>
+.dev-header {
+    width: 100%;
+    height: 50px;
+    padding: 0 40px;
+    box-sizing: border-box;
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(26,26,26,.1);
+    font-size: 14px;
+    line-height:50px;/*设置其文字内容垂直居中*/
+}
+.router-link-active{
+  color:rgb(0, 0, 0);
+  text-decoration:underline;
+}
+/* .menuitem{
+color:#808695;
+}
+.menuitem:hover{
+  color:#000;
+  text-decoration:underline;
+} */
+</style>

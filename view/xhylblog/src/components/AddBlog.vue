@@ -1,5 +1,6 @@
 <template>
 <div class="add-blog">
+    <HeadNav></HeadNav>
     <Form ref="formValidate" :model="blog" :rules="blogrule" :label-width="80">
         <FormItem label="标题：" prop="title">
             <Input v-model="blog.title" placeholder="请输入标题"/>
@@ -31,8 +32,12 @@
     
 </template>
 <script>
+import HeadNav from '@/components/HeadNav'
 export default {
   name: "add-blog",
+  components:{
+            HeadNav,
+        },
   data() {
     return {
       blog: {
@@ -115,12 +120,9 @@ export default {
 </script>
 
 <style scoped>
-body {
-  text-align: center;
-}
 .add-blog {
   margin: 0 auto;
-  width: 400px;
-  height: 100px;
+  width: 100%;
+  height: 100%;
 }
 </style>

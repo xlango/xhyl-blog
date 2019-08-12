@@ -13,9 +13,10 @@ Vue.prototype.$put=put;
 import 'iview/dist/styles/iview.css'
 import 'iview/dist/iview.min.js'
 import VueRouter  from 'vue-router'
+import AddBlog from '@/components/AddBlog'
+import Home from '@/components/Home'
+import Login from '@/components/Login'
 
-import AddBlog from './components/AddBlog'
-import Home from './components/Home'
 
 Vue.config.productionTip = false
 Vue.use(iView)
@@ -24,15 +25,20 @@ Vue.use(VueRouter)
 
 //配置路由
 const router=new VueRouter({
+  linkActiveClass:'router-link-active',
   routes:[
     {path:"/",component:Home},
+    // {path:"/home",component:Home},
     {path:"/article/add",component:AddBlog},
+    // {path:"/article/list",component:BlogList},
+    {path:"/login",component:Login},
   ],
   mode:"history"
 })
 
 /* eslint-disable no-new */
 new Vue({
+  router:router,
   el: '#app',
   components: { App },
   template: '<App/>'
