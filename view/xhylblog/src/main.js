@@ -18,10 +18,14 @@ import Home from '@/components/Home'
 import Login from '@/components/Login'
 import Me from '@/components/Me'
 
+//验证码
+import SlideVerify from 'vue-monoplasty-slide-verify';
+
 
 Vue.config.productionTip = false
 Vue.use(iView)
 Vue.use(VueRouter)
+Vue.use(SlideVerify);
 
 
 //配置路由

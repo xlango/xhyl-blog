@@ -21,13 +21,25 @@
             <Input prefix="ios-lock"  suffix="ios-eye" type="password"  placeholder="请输入密码" style="margin-left:15px;width:90%;"/>
         </Row>
         <Row>
-            <Button type="info" style="margin:15px;margin-top:20px;width:90%;" long>验证码</Button>
+            <Button v-if="!openVerify" type="success" style="margin:15px;width:90%;" @click="changeOpenVerify" long><Icon type="md-arrow-round-down" />验证码</Button>
+            <div v-else-if="openVerify" align="center" style="margin:10px;">
+                <slide-verify :l="42"
+                    :r="10"
+                    :w="310"
+                    :h="155"
+                    @success="onSuccess"
+                    @fail="onFail"
+                    @refresh="onRefresh"
+                    :slider-text="text"
+                    ></slide-verify>
+            </div>
+            
         </Row>
         <Row>
-            <Button type="success" style="margin:15px;width:90%;" long>登录</Button>
+            <Button type="success" style="margin:15px;width:90%;" :disabled="!isVerify" long>登录</Button>
         </Row>
         <Row>
-            <div style="font-size: 14px;color:rgb(53, 184, 245);text-align:center;margin-top:20px;"><router-link to='/forgetpwd' tag="span" exact><span>忘记密码？</span></router-link></div>
+            <div style="font-size: 14px;color:rgb(53, 184, 245);text-align:center;margin-top:15px;"><router-link to='/forgetpwd' tag="span" exact><span>忘记密码？</span></router-link></div>
             <div style="font-size: 14px;text-align:center;margin-top:5px;">尚未拥有账户？ <router-link to='/forgetpwd' tag="span" exact><span  style="color:rgb(53, 184, 245);">注册</span></router-link></div>
         </Row>
         <Row>
@@ -50,11 +62,24 @@ export default {
         },
   data () {
             return {
-                
+                openVerify:false,
+                isVerify: false,
+                text: '向右滑',
             }
         },
 		methods:{
-
+            onSuccess(){
+            this.isVerify = true;
+            },
+            onFail(){
+                this.isVerify = false;
+            },
+            onRefresh(){
+                this.isVerify = false;
+            },
+            changeOpenVerify(){
+                this.openVerify=true;
+            }
 		},
 		created(){
 			
@@ -67,7 +92,6 @@ export default {
 }
 .card {
   width: 23%;
-  height: 450px;
   margin:0 auto;
   margin-top:10%;
 }
