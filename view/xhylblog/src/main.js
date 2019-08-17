@@ -16,6 +16,7 @@ import VueRouter  from 'vue-router'
 import AddBlog from '@/components/AddBlog'
 import Home from '@/components/Home'
 import Login from '@/components/Login'
+import Me from '@/components/Me'
 
 
 Vue.config.productionTip = false
@@ -32,6 +33,7 @@ const router=new VueRouter({
     {path:"/article/add",component:AddBlog},
     // {path:"/article/list",component:BlogList},
     {path:"/login",component:Login},
+    {path:"/me",component:Me},
   ],
   mode:"history"
 })

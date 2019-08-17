@@ -23,10 +23,14 @@
                                 <div class="col-md-4"><img src="@/assets/logo.png" style="width:80px;height:80px;margin:5px;float:right;"/></div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-11">
                                     <button class="btntype"><img src="@/assets/logo.png" style="width:13px;height:13px;margin:2px;"/>vue</button>
                                     <button class="btntype"><img src="@/assets/logo.png" style="width:13px;height:13px;margin:2px;"/>vue</button>
                                 </div>
+                                <div class="col-md-1" style="color:green;margin-top:15px;" align="right" title="共回复2条">
+                                    <Icon type="ios-chatbubbles" /><span style="font-size: 12px;margin:2px;" >2</span>
+                                </div>
+                                
                             </div>
                         </Card>
                         <Card class="card">
@@ -50,6 +54,9 @@
             </div>
             <div class="col-md-3">
                 <Card class="card-slider">
+                    <Input suffix="ios-search" placeholder="搜索" style="width: 100%" />
+                </Card>
+                <Card class="card-slider">
                     <DatePicker :value="nowTime" format="yyyy年MM月dd日" type="date" placeholder="Select date" style="width: 100%;"></DatePicker>
                 </Card>
                 <Card class="card-slider">
@@ -66,11 +73,7 @@
                         <Tag checkable color="warning">Golang</Tag>
                     </Row>
                 </Card>
-                <Card class="card-slider">
-                    <div style="text-align:center">
-                        
-                    </div>
-                </Card>
+                
                 <Button type="success"  class="card-slider" long><Icon type="ios-create-outline"/>写文章</Button>
             </div>
             <div class="col-md-1"></div>
@@ -85,20 +88,14 @@ export default {
   name: "blog-list",
   data () {
             return {
-                nowTime:""
+                nowTime:new Date().toLocaleString(),
             }
         },
 		methods:{
-			getTime(){
-				setInterval(()=>{
-					//new Date() new一个data对象，当前日期和时间
-					//toLocaleString() 方法可根据本地时间把 Date 对象转换为字符串，并返回结果。
-					this.nowTime = new Date().toLocaleString();
-				},1000)
-			}
+
 		},
-		created(){
-			this.getTime();
+		mounted(){
+
 		}
 };
 </script>

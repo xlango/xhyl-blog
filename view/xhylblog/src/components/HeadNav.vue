@@ -22,10 +22,15 @@
         <div class="col-lg-2">
           <div class="container" style="font-size: 14px;color:rgb(53, 184, 245);">
             <div class="row">
-              <div class="col-md-2">
+              <div v-if="!isLogin" class="col-md-2">
                 <router-link to='/login' tag="span" exact><span>登录</span></router-link>
                 <b style="color:#000;">•</b>
                 <router-link to='/register' tag="span" exact><span>注册</span></router-link>
+              </div>
+              <div v-else-if="isLogin" class="col-md-2" align="left">
+                <router-link to='/me' tag="span" exact><img src="@/assets/avatar.png" style="width:35px;height:35px;margin:5px;border-radius:70%;"/></router-link>
+                <img src="@/assets/alert.png" style="width:30px;height:30px;margin:5px;"/>
+                <img src="@/assets/add.png" style="width:25px;height:25px;margin-left:5px;"/>
               </div>
             </div>
           </div>
@@ -40,6 +45,7 @@ export default {
   name: "head-nav",
   data() {
   return {
+    isLogin:true,
   }
 },
   methods:{
