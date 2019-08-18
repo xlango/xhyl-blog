@@ -12,16 +12,21 @@
             <div style="margin-top:5px;margin:5px;margin-left:15px;"><span style="color:red;">*</span><span style="margin-left:5px;">账号</span></div>
         </Row>
         <Row>
-            <Input prefix="ios-contact"   placeholder="请输入名字" style="margin-left:15px;width:90%;"/>
+            <Input placeholder="账号" clearable style="margin-left:15px;width:90%;" size="large" maxlength="20">
+                <Icon type="ios-contact" slot="prefix" />
+            </Input>
         </Row>
         <Row>
             <div style="margin-top:18px;margin:5px;margin-left:15px;"><span style="color:red;">*</span><span style="margin-left:5px;">密码</span></div>
         </Row>
         <Row>
-            <Input prefix="ios-lock"  suffix="ios-eye" type="password"  placeholder="请输入密码" style="margin-left:15px;width:90%;"/>
+            <Input placeholder="密码"  style="margin-left:15px;width:90%;" :type="isLaws?'text':'password'" size="large" maxlength="16">
+                <Icon type="ios-lock" slot="prefix" />
+                <Icon :type="isLaws?'ios-eye-off':'ios-eye'" slot="suffix" @click="changeLaws" />
+            </Input>
         </Row>
         <Row>
-            <Button v-if="!openVerify" type="success" style="margin:15px;width:90%;" @click="changeOpenVerify" long><Icon type="md-arrow-round-down" />验证码</Button>
+            <Button v-if="!openVerify" type="info" style="margin:15px;width:90%;" @click="changeOpenVerify" long><Icon type="md-arrow-round-down" />验证码</Button>
             <div v-else-if="openVerify" align="center" style="margin:10px;">
                 <slide-verify :l="42"
                     :r="10"
@@ -64,6 +69,7 @@ export default {
             return {
                 openVerify:false,
                 isVerify: false,
+                isLaws: false,
                 text: '向右滑',
             }
         },
@@ -79,6 +85,14 @@ export default {
             },
             changeOpenVerify(){
                 this.openVerify=true;
+            },
+            changeLaws(){
+                if(this.isLaws){
+                    this.isLaws=false;
+                }else{
+                    this.isLaws=true;
+                }
+                
             }
 		},
 		created(){

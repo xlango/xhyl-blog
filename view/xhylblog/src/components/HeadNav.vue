@@ -28,8 +28,18 @@
                 <router-link to='/register' tag="span" exact><span>注册</span></router-link>
               </div>
               <div v-else-if="isLogin" class="col-md-2" align="left">
-                <router-link to='/me' tag="span" exact><img src="@/assets/avatar.png" style="width:35px;height:35px;margin:5px;border-radius:70%;"/></router-link>
-                <img src="@/assets/alert.png" style="width:30px;height:30px;margin:5px;"/>
+                <Dropdown>
+                  <a href="javascript:void(0)">
+                      <img src="@/assets/avatar.png" style="width:35px;height:35px;margin:5px;border-radius:70%;"/>
+                  </a>
+                  <DropdownMenu slot="list">
+                      <DropdownItem><router-link to='/me' tag="span" exact>主页</router-link></DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+                <Poptip title="提醒" content="！" placement="bottom-end">
+                  <img src="@/assets/alert.png" style="width:30px;height:30px;margin:5px;"/>
+                </Poptip>
+                
                 <img src="@/assets/add.png" style="width:25px;height:25px;margin-left:5px;"/>
               </div>
             </div>
