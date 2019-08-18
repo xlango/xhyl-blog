@@ -17,6 +17,8 @@ import AddBlog from '@/components/AddBlog'
 import Home from '@/components/Home'
 import Login from '@/components/Login'
 import Me from '@/components/Me'
+import QuestionList from '@/components/QuestionList'
+
 
 //验证码
 import SlideVerify from 'vue-monoplasty-slide-verify';
@@ -38,6 +40,7 @@ const router=new VueRouter({
     // {path:"/article/list",component:BlogList},
     {path:"/login",component:Login},
     {path:"/me",component:Me},
+    {path:"/question/list",component:QuestionList},
   ],
   mode:"history"
 })

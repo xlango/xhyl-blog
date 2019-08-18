@@ -10,7 +10,7 @@
             <div class="row">
               <div class="col-md-1"><router-link to='/' tag="div" exact><div>首页</div></router-link></div>
               <div class="col-md-1"><router-link to='/article/add' tag="div" exact><div>文章</div></router-link></div>
-              <div class="col-md-1"><router-link to='/a' tag="div" exact><div>提问</div></router-link></div>
+              <div class="col-md-1"><router-link to='/question/list' tag="div" exact><div>提问</div></router-link></div>
               <div class="col-md-1"><router-link to='/b' tag="div" exact><div>相册</div></router-link></div>
               <div class="col-md-1"><router-link to='/b' tag="div" exact><div>归档</div></router-link></div>
             </div>
@@ -34,13 +34,26 @@
                   </a>
                   <DropdownMenu slot="list">
                       <DropdownItem><router-link to='/me' tag="span" exact>主页</router-link></DropdownItem>
+                      <DropdownItem><div  @click="loginOut">注销</div></DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
                 <Poptip title="提醒" content="！" placement="bottom-end">
                   <img src="@/assets/alert.png" style="width:30px;height:30px;margin:5px;"/>
                 </Poptip>
                 
-                <img src="@/assets/add.png" style="width:25px;height:25px;margin-left:5px;"/>
+
+                <Dropdown>
+                  <a href="javascript:void(0)">
+                      <img src="@/assets/add.png" style="width:25px;height:25px;margin-left:5px;"/>
+                  </a>
+                  <DropdownMenu slot="list">
+                      <DropdownItem><router-link to='/circle/add' tag="span" exact>写文章</router-link></DropdownItem>
+                      <DropdownItem><router-link to='/question/add' tag="span" exact>提问题</router-link></DropdownItem>
+                      <DropdownItem><router-link to='/photo/add' tag="span" exact>传相册</router-link></DropdownItem>
+                      <DropdownItem><router-link to='/archive/add' tag="span" exact>归档</router-link></DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+                
               </div>
             </div>
           </div>
@@ -50,51 +63,65 @@
   </div>
 </template>
 <script>
-
+import HeadNav from "@/components/HeadNav";
 export default {
   name: "head-nav",
   data() {
-  return {
-    isLogin:true,
-  }
-},
-  methods:{
-    //点击导航样式改变
-    changeStatus(e){
-      localStorage.setItem('indexNav',e);
-      this.isActive=e;
-      console.log("点击了：",this.isActive);
-      console.log("存储：",localStorage.getItem('indexNav'));
-      },
+    return {
+      isLogin: false
+    };
   },
+  methods: {
+    loginOut() {
+      this.$Spin.show({
+        render: h => {
+          return h("div", [
+            h("Icon", {
+              class: "demo-spin-icon-load",
+              props: {
+                type: "ios-loading",
+                size: 18
+              }
+            }),
+            h("div", "正在注销...")
+          ]);
+        }
+      });
+      setTimeout(() => {
+        this.$Spin.hide();
+        localStorage.removeItem("token");
+      this.$router.push({ path: "/login" });
+      }, 2000);
+    }
+  },
+  created() {
+    var token = localStorage.getItem("token");
+    if (token) {
+      this.isLogin = true;
+    }
+  }
 };
-
-
 </script>
 
 <style scoped>
 .dev-header {
-    width: 100%;
-    height: 50px;
-    padding: 0 40px;
-    box-sizing: border-box;
-    z-index: 1000;
-    position: fixed;
-    top: 0;
-    background-color: #fff;
-    box-shadow: 0 1px 3px rgba(26,26,26,.1);
-    font-size: 14px;
-    line-height:50px;/*设置其文字内容垂直居中*/
+  width: 100%;
+  height: 50px;
+  padding: 0 40px;
+  box-sizing: border-box;
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
+  font-size: 14px;
+  line-height: 50px; /*设置其文字内容垂直居中*/
 }
-.router-link-active{
-  color:rgb(0, 0, 0);
-  text-decoration:underline;
+.router-link-active {
+  color: rgb(0, 0, 0);
+  text-decoration: underline;
 }
-/* .menuitem{
-color:#808695;
+.demo-spin-icon-load {
+  animation: ani-demo-spin 1s linear infinite;
 }
-.menuitem:hover{
-  color:#000;
-  text-decoration:underline;
-} */
 </style>

@@ -12,7 +12,7 @@
             <div style="margin-top:5px;margin:5px;margin-left:15px;"><span style="color:red;">*</span><span style="margin-left:5px;">账号</span></div>
         </Row>
         <Row>
-            <Input placeholder="账号" clearable style="margin-left:15px;width:90%;" size="large" maxlength="20">
+            <Input v-model="username" placeholder="账号" clearable style="margin-left:15px;width:90%;" size="large" maxlength="20">
                 <Icon type="ios-contact" slot="prefix" />
             </Input>
         </Row>
@@ -20,7 +20,7 @@
             <div style="margin-top:18px;margin:5px;margin-left:15px;"><span style="color:red;">*</span><span style="margin-left:5px;">密码</span></div>
         </Row>
         <Row>
-            <Input placeholder="密码"  style="margin-left:15px;width:90%;" :type="isLaws?'text':'password'" size="large" maxlength="16">
+            <Input v-model="password" placeholder="密码"  style="margin-left:15px;width:90%;" :type="isLaws?'text':'password'" size="large" maxlength="16">
                 <Icon type="ios-lock" slot="prefix" />
                 <Icon :type="isLaws?'ios-eye-off':'ios-eye'" slot="suffix" @click="changeLaws" />
             </Input>
@@ -31,7 +31,7 @@
                 <slide-verify :l="42"
                     :r="10"
                     :w="310"
-                    :h="155"
+                    :h="120"
                     @success="onSuccess"
                     @fail="onFail"
                     @refresh="onRefresh"
@@ -41,7 +41,13 @@
             
         </Row>
         <Row>
-            <Button type="success" style="margin:15px;width:90%;" :disabled="!isVerify" long>登录</Button>
+            <Button type="success" style="margin:15px;width:90%;" :disabled="!isVerify" @click="login" long>登录</Button>
+            <div style="margin-left:15px;width:90%;">
+                <span  style="color:green;">{{loginSuccess}}</span>
+                <span  style="color:red;">{{loginFail}}</span>
+                
+            </div>
+            
         </Row>
         <Row>
             <div style="font-size: 14px;color:rgb(53, 184, 245);text-align:center;margin-top:15px;"><router-link to='/forgetpwd' tag="span" exact><span>忘记密码？</span></router-link></div>
@@ -60,6 +66,7 @@
 </template>
 <script>
 import HeadNav from '@/components/HeadNav'
+
 export default {
   name: "login",
   components:{
@@ -71,6 +78,10 @@ export default {
                 isVerify: false,
                 isLaws: false,
                 text: '向右滑',
+                username:"",
+                password:"",
+                loginSuccess:"",
+                loginFail:"",
             }
         },
 		methods:{
@@ -92,7 +103,29 @@ export default {
                 }else{
                     this.isLaws=true;
                 }
-                
+            },
+            //登录
+            login(){
+                this.$post("/user/login", {
+                    username: this.username,
+                    password: this.password,
+                }).then(
+                    res => {
+                        if (res.Code == 200) {
+                            this.loginSuccess="登录成功";
+                            this.loginFail="";
+                            localStorage.setItem("token",res.Msg);
+                            this.$router.push({path:'/'})
+                        }
+                    },
+                    err => {
+                        alert(err)
+                        this.openVerify=false
+                        this.onRefresh()
+                        this.loginSuccess="";
+                        this.loginFail="账号或密码错误！";
+                    }
+                );
             }
 		},
 		created(){
