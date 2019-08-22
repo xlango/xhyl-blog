@@ -52,10 +52,10 @@ func init() {
             Filters: nil,
             Params: nil})
 
-    beego.GlobalControllerRouter["xhylblog/controllers:UserController"] = append(beego.GlobalControllerRouter["xhylblog/controllers:UserController"],
+    beego.GlobalControllerRouter["xhylblog/controllers:ArticleController"] = append(beego.GlobalControllerRouter["xhylblog/controllers:ArticleController"],
         beego.ControllerComments{
-            Method: "Post",
-            Router: `/`,
+            Method: "Add",
+            Router: `/add`,
             AllowHTTPMethods: []string{"post"},
             MethodParams: param.Make(),
             Filters: nil,
@@ -66,6 +66,15 @@ func init() {
             Method: "GetAll",
             Router: `/`,
             AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["xhylblog/controllers:UserController"] = append(beego.GlobalControllerRouter["xhylblog/controllers:UserController"],
+        beego.ControllerComments{
+            Method: "Delete",
+            Router: `/:id`,
+            AllowHTTPMethods: []string{"delete"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})
@@ -90,17 +99,26 @@ func init() {
 
     beego.GlobalControllerRouter["xhylblog/controllers:UserController"] = append(beego.GlobalControllerRouter["xhylblog/controllers:UserController"],
         beego.ControllerComments{
-            Method: "Delete",
-            Router: `/:id`,
-            AllowHTTPMethods: []string{"delete"},
+            Method: "Login",
+            Router: `/login`,
+            AllowHTTPMethods: []string{"post"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})
 
     beego.GlobalControllerRouter["xhylblog/controllers:UserController"] = append(beego.GlobalControllerRouter["xhylblog/controllers:UserController"],
         beego.ControllerComments{
-            Method: "Login",
-            Router: `/login`,
+            Method: "Logout",
+            Router: `/logout`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["xhylblog/controllers:UserController"] = append(beego.GlobalControllerRouter["xhylblog/controllers:UserController"],
+        beego.ControllerComments{
+            Method: "Post",
+            Router: `/register`,
             AllowHTTPMethods: []string{"post"},
             MethodParams: param.Make(),
             Filters: nil,

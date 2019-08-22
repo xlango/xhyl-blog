@@ -31,7 +31,13 @@ func init() {
 // last inserted Id on success.
 func AddUser(m *User) (id int64, err error) {
 	o := orm.NewOrm()
-	id, err = o.Insert(m)
+	v:=User{}
+	o.QueryTable(new(User)).Filter("Username", m.Username).RelatedSel().One(&v)
+	if v.Id==0{
+		//密码加密
+		m.Password=utils.GetMd5String(m.Password)
+		id, err = o.Insert(m)
+	}
 	return
 }
 
@@ -154,7 +160,7 @@ func DeleteUser(id int64) (err error) {
 func  Login(username string,password string) (token string,err error) {
 	o := orm.NewOrm()
 	v:=User{}
-	if err = o.QueryTable(new(User)).Filter("Username", username).Filter("Password",password).RelatedSel().One(&v); err == nil {
+	if err = o.QueryTable(new(User)).Filter("Username", username).Filter("Password",utils.GetMd5String(password)).RelatedSel().One(&v); err == nil {
 		tokenString := utils.GenerateToken(86400, v.Username)
 		return  tokenString,nil
 	}

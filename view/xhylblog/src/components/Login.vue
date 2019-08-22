@@ -51,7 +51,7 @@
         </Row>
         <Row>
             <div style="font-size: 14px;color:rgb(53, 184, 245);text-align:center;margin-top:15px;"><router-link to='/forgetpwd' tag="span" exact><span>忘记密码？</span></router-link></div>
-            <div style="font-size: 14px;text-align:center;margin-top:5px;">尚未拥有账户？ <router-link to='/forgetpwd' tag="span" exact><span  style="color:rgb(53, 184, 245);">注册</span></router-link></div>
+            <div style="font-size: 14px;text-align:center;margin-top:5px;">尚未拥有账户？ <router-link to='/registe' tag="span" exact><span  style="color:rgb(53, 184, 245);">注册</span></router-link></div>
         </Row>
         <Row>
             <div style="margin-top:25px;margin:5px;margin-left:20px;">
@@ -138,7 +138,7 @@ export default {
   height: 100%;
 }
 .card {
-  width: 23%;
+  width: 25%;
   margin:0 auto;
   margin-top:10%;
 }

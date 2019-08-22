@@ -20,6 +20,7 @@ func (c *ArticleController) URLMapping() {
 	c.Mapping("GetAll", c.GetAll)
 	c.Mapping("Put", c.Put)
 	c.Mapping("Delete", c.Delete)
+	c.Mapping("Add", c.Add)
 }
 
 // Post ...
@@ -151,6 +152,23 @@ func (c *ArticleController) Delete() {
 	id, _ := strconv.ParseInt(idStr, 0, 64)
 	if err := models.DeleteArticle(id); err == nil {
 		c.Ok("OK")
+	} else {
+		c.Error(err.Error())
+	}
+}
+
+// Post ...
+// @Title Post
+// @Description create Article
+// @Param	body		body 	models.Article	true		"body for Article content"
+// @Success 201 {int} models.Article
+// @Failure 403 body is empty
+// @router /add [post]
+func (c *ArticleController) Add() {
+	var v models.ArticleAddModel
+	c.JsonParam(&v)
+	if err := models.AddArticleContentToMongo(&v); err == nil {
+		c.Ok(v)
 	} else {
 		c.Error(err.Error())
 	}

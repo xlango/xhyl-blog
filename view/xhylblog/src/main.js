@@ -18,6 +18,7 @@ import Home from '@/components/Home'
 import Login from '@/components/Login'
 import Me from '@/components/Me'
 import QuestionList from '@/components/QuestionList'
+import Registe from '@/components/Registe'
 
 
 //验证码
@@ -39,6 +40,7 @@ const router=new VueRouter({
     {path:"/article/add",component:AddBlog},
     // {path:"/article/list",component:BlogList},
     {path:"/login",component:Login},
+    {path:"/registe",component:Registe},
     {path:"/me",component:Me},
     {path:"/question/list",component:QuestionList},
   ],

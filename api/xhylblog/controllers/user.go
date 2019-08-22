@@ -16,6 +16,7 @@ type UserController struct {
 // URLMapping ...
 func (c *UserController) URLMapping() {
 	c.Mapping("Login", c.Login)
+	c.Mapping("Logout", c.Logout)
 	c.Mapping("Post", c.Post)
 	c.Mapping("GetOne", c.GetOne)
 	c.Mapping("GetAll", c.GetAll)
@@ -41,6 +42,22 @@ func (c *UserController) Login() {
 	}
 }
 
+// Logout ...
+// @Title 用户注销
+// @Description 用户注销
+// @Param	body		body 	models.User	true		"body for User content"
+// @Success 201 {int} models.User
+// @Failure 403 body is empty
+// @router /logout [post]
+func (c *UserController) Logout() {
+	var v models.User
+	c.JsonParam(&v)
+	if token, err := models.Login(v.Username,v.Password); err == nil {
+		c.Ok(token)
+	} else {
+		c.RequestError("账号或密码错误！")
+	}
+}
 
 // Post ...
 // @Title Post
@@ -48,14 +65,14 @@ func (c *UserController) Login() {
 // @Param	body		body 	models.User	true		"body for User content"
 // @Success 201 {int} models.User
 // @Failure 403 body is empty
-// @router / [post]
+// @router /register [post]
 func (c *UserController) Post() {
 	var v models.User
 	c.JsonParam(&v)
-	if _, err := models.AddUser(&v); err == nil {
+	if id, _ := models.AddUser(&v); id != 0 {
 		c.Ok(v)
 	} else {
-		c.Error(err.Error())
+		c.RequestError("该用户名已经注册！")
 	}
 }
 

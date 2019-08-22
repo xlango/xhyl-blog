@@ -22,18 +22,13 @@ func CrossRequestFilter()  {
 func TokenFilter()  {
 	var FilterToken = func(ctx *context.Context) {
 		logs.Info("current router path is ", ctx.Request.RequestURI)
-		if ctx.Request.RequestURI != "/xhyl/user/login" && ctx.Input.Header("token") == "" {
+		if ctx.Request.RequestURI != "/xhyl/user/login" && ctx.Request.RequestURI != "/xhyl/user/register" && ctx.Input.Header("token") == "" {
 			logs.Error("without token, unauthorized !!")
 			ctx.ResponseWriter.WriteHeader(401)
 			ctx.ResponseWriter.Write([]byte("no permission"))
 		}
-		if ctx.Request.RequestURI != "/xhyl/user/login" && ctx.Request.Header.Get("token") != "" {
+		if ctx.Request.RequestURI != "/xhyl/user/login" && ctx.Request.RequestURI != "/xhyl/user/register" && ctx.Request.Header.Get("token") != "" {
 			token := ctx.Request.Header.Get("token")
-			//token = strings.Split(token, "")[1]
-			logs.Info("curernttoken: ", token)
-			// validate token
-			// invoke ValidateToken in utils/token
-			// invalid or expired todo res 401
 
 			if err := ValidateToken(token);err!=nil {
 				ctx.ResponseWriter.WriteHeader(403)

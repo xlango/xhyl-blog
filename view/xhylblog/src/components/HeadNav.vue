@@ -25,7 +25,7 @@
               <div v-if="!isLogin" class="col-md-2">
                 <router-link to='/login' tag="span" exact><span>登录</span></router-link>
                 <b style="color:#000;">•</b>
-                <router-link to='/register' tag="span" exact><span>注册</span></router-link>
+                <router-link to='/registe' tag="span" exact><span>注册</span></router-link>
               </div>
               <div v-else-if="isLogin" class="col-md-2" align="left">
                 <Dropdown>

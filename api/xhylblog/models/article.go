@@ -5,9 +5,12 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"xhylblog/dbconn"
 
 	"github.com/astaxie/beego/orm"
 )
+
+var MongoClient *dbconn.MongoClient
 
 type Article struct {
 	Id      int64
@@ -16,8 +19,30 @@ type Article struct {
 	Image   string `orm:"size(255)"`
 }
 
+//文章主要内容
+type ArticleContent struct {
+	Id int64 //Id
+	Paragraph []Paragraph //段落
+}
+//段落内容
+type Paragraph struct {
+	Title string
+	Content string
+	Images   []string
+}
+
+//添加文章
+type ArticleAddModel struct {
+	Article *Article //存入mysql
+	Paragraph []Paragraph //存入mongo
+}
+
 func init() {
 	orm.RegisterModelWithPrefix("tb_", new(Article))
+	MongoClient=&dbconn.MongoClient{
+		Database:"xhyl",
+		Collection:"article_paragraph",
+	}
 }
 
 // AddArticle insert a new Article into database and returns
@@ -139,6 +164,20 @@ func DeleteArticle(id int64) (err error) {
 		if num, err = o.Delete(&Article{Id: id}); err == nil {
 			fmt.Println("Number of records deleted in database:", num)
 		}
+	}
+	return
+}
+
+/**
+将博客主要内容存入mongo
+ */
+func AddArticleContentToMongo(m *ArticleAddModel) (err error) {
+	if id, err := AddArticle(m.Article);err==nil{
+		content:=&ArticleContent{
+			Id:id,
+			Paragraph:m.Paragraph,
+		}
+		MongoClient.Insert(content)
 	}
 	return
 }
