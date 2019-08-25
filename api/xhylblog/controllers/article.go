@@ -15,7 +15,6 @@ type ArticleController struct {
 
 // URLMapping ...
 func (c *ArticleController) URLMapping() {
-	c.Mapping("Post", c.Post)
 	c.Mapping("GetOne", c.GetOne)
 	c.Mapping("GetAll", c.GetAll)
 	c.Mapping("Put", c.Put)
@@ -23,22 +22,6 @@ func (c *ArticleController) URLMapping() {
 	c.Mapping("Add", c.Add)
 }
 
-// Post ...
-// @Title Post
-// @Description create Article
-// @Param	body		body 	models.Article	true		"body for Article content"
-// @Success 201 {int} models.Article
-// @Failure 403 body is empty
-// @router / [post]
-func (c *ArticleController) Post() {
-	var v models.Article
-	c.JsonParam(&v)
-	if _, err := models.AddArticle(&v); err == nil {
-		c.Ok(v)
-	} else {
-		c.Error(err.Error())
-	}
-}
 
 // GetOne ...
 // @Title Get One
@@ -131,9 +114,9 @@ func (c *ArticleController) GetAll() {
 func (c *ArticleController) Put() {
 	idStr := c.Ctx.Input.Param(":id")
 	id, _ := strconv.ParseInt(idStr, 0, 64)
-	v := models.Article{Id: id}
+	v := models.ArticleDetailModel{Article:&models.Article{Id:id} }
 	json.Unmarshal(c.Ctx.Input.RequestBody, &v)
-	if err := models.UpdateArticleById(&v); err == nil {
+	if err := models.UpdateArticleDetailById(&v); err == nil {
 		c.Ok("OK")
 	} else {
 		c.Error(err.Error())
@@ -163,9 +146,9 @@ func (c *ArticleController) Delete() {
 // @Param	body		body 	models.Article	true		"body for Article content"
 // @Success 201 {int} models.Article
 // @Failure 403 body is empty
-// @router /add [post]
+// @router / [post]
 func (c *ArticleController) Add() {
-	var v models.ArticleAddModel
+	var v models.ArticleDetailModel
 	c.JsonParam(&v)
 	if err := models.AddArticleContentToMongo(&v); err == nil {
 		c.Ok(v)

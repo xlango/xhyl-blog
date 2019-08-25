@@ -9,18 +9,18 @@ func init() {
 
     beego.GlobalControllerRouter["xhylblog/controllers:ArticleController"] = append(beego.GlobalControllerRouter["xhylblog/controllers:ArticleController"],
         beego.ControllerComments{
-            Method: "Post",
+            Method: "GetAll",
             Router: `/`,
-            AllowHTTPMethods: []string{"post"},
+            AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})
 
     beego.GlobalControllerRouter["xhylblog/controllers:ArticleController"] = append(beego.GlobalControllerRouter["xhylblog/controllers:ArticleController"],
         beego.ControllerComments{
-            Method: "GetAll",
+            Method: "Add",
             Router: `/`,
-            AllowHTTPMethods: []string{"get"},
+            AllowHTTPMethods: []string{"post"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})
@@ -48,15 +48,6 @@ func init() {
             Method: "Delete",
             Router: `/:id`,
             AllowHTTPMethods: []string{"delete"},
-            MethodParams: param.Make(),
-            Filters: nil,
-            Params: nil})
-
-    beego.GlobalControllerRouter["xhylblog/controllers:ArticleController"] = append(beego.GlobalControllerRouter["xhylblog/controllers:ArticleController"],
-        beego.ControllerComments{
-            Method: "Add",
-            Router: `/add`,
-            AllowHTTPMethods: []string{"post"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})

@@ -3,6 +3,8 @@ package models
 import (
 	"errors"
 	"fmt"
+	"github.com/astaxie/beego/logs"
+	"gopkg.in/mgo.v2/bson"
 	"reflect"
 	"strings"
 	"xhylblog/dbconn"
@@ -21,8 +23,9 @@ type Article struct {
 
 //文章主要内容
 type ArticleContent struct {
-	Id int64 //Id
-	Paragraph []Paragraph //段落
+	_id bson.ObjectId `bson:"_id,omitempty"` //mongo objectId  	a := bson.NewObjectId()
+	Id int64
+	Paragraphs []Paragraph //段落
 }
 //段落内容
 type Paragraph struct {
@@ -32,9 +35,9 @@ type Paragraph struct {
 }
 
 //添加文章
-type ArticleAddModel struct {
+type ArticleDetailModel struct {
 	Article *Article //存入mysql
-	Paragraph []Paragraph //存入mongo
+	Paragraphs []Paragraph //存入mongo
 }
 
 func init() {
@@ -120,7 +123,19 @@ func GetAllArticle(query map[string]string, fields []string, sortby []string, or
 	if _, err = qs.Limit(limit, offset).All(&l, fields...); err == nil {
 		if len(fields) == 0 {
 			for _, v := range l {
-				ml = append(ml, v)
+				paragraphsMongo := MongoClient.FindOne(map[string]interface{}{"id": v.Id})
+				var paragraphs []Paragraph
+				if paragraphsMongo!=nil {
+					data,_:=bson.Marshal(paragraphsMongo)
+					articleContent:=&ArticleContent{}
+					bson.Unmarshal(data, articleContent)
+					paragraphs=articleContent.Paragraphs
+				}
+				articleDetail:=&ArticleDetailModel{
+					Article:&v,
+					Paragraphs:paragraphs,
+				}
+				ml = append(ml, articleDetail)
 			}
 		} else {
 			// trim unused fields
@@ -130,7 +145,19 @@ func GetAllArticle(query map[string]string, fields []string, sortby []string, or
 				for _, fname := range fields {
 					m[fname] = val.FieldByName(fname).Interface()
 				}
-				ml = append(ml, m)
+				paragraphsMongo := MongoClient.FindOne(map[string]interface{}{"id": v.Id})
+				var paragraphs []Paragraph
+				if paragraphsMongo!=nil {
+					data,_:=bson.Marshal(paragraphsMongo)
+					articleContent:=&ArticleContent{}
+					bson.Unmarshal(data, articleContent)
+					paragraphs=articleContent.Paragraphs
+				}
+				articleDetail:=&ArticleDetailModel{
+					Article:&v,
+					Paragraphs:paragraphs,
+				}
+				ml = append(ml, articleDetail)
 			}
 		}
 		return ml, nil
@@ -162,7 +189,11 @@ func DeleteArticle(id int64) (err error) {
 	if err = o.Read(&v); err == nil {
 		var num int64
 		if num, err = o.Delete(&Article{Id: id}); err == nil {
-			fmt.Println("Number of records deleted in database:", num)
+			logs.Info("(mysql)Number of article records deleted in database:", num)
+		}
+		del := MongoClient.Delete(map[string]interface{}{"id": id})
+		if !del{
+			logs.Error("[error] delete article from mongo fail!")
 		}
 	}
 	return
@@ -171,13 +202,37 @@ func DeleteArticle(id int64) (err error) {
 /**
 将博客主要内容存入mongo
  */
-func AddArticleContentToMongo(m *ArticleAddModel) (err error) {
+func AddArticleContentToMongo(m *ArticleDetailModel) (err error) {
 	if id, err := AddArticle(m.Article);err==nil{
+		bson.NewObjectId()
+
 		content:=&ArticleContent{
 			Id:id,
-			Paragraph:m.Paragraph,
+			Paragraphs:m.Paragraphs,
 		}
-		MongoClient.Insert(content)
+		insert := MongoClient.Insert(content)
+		if !insert {
+			logs.Error("[error] insert article to mongo fail!")
+		}
+	}
+	return
+}
+
+// UpdateArticle updates Article by Id and returns error if
+// the record to be updated doesn't exist
+func UpdateArticleDetailById(m *ArticleDetailModel) (err error) {
+	o := orm.NewOrm()
+	v := Article{Id: m.Article.Id}
+	// ascertain id exists in the database
+	if err = o.Read(&v); err == nil {
+		var num int64
+		if num, err = o.Update(m.Article); err == nil {
+			logs.Info("(mysql)Number of article records updated in database:", num)
+		}
+		update := MongoClient.Update(map[string]interface{}{"id": m.Article.Id}, map[string]interface{}{"paragraph": m.Paragraphs})
+		if !update{
+			logs.Error("[error] update article to mongo fail!")
+		}
 	}
 	return
 }
