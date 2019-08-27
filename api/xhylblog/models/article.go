@@ -36,6 +36,7 @@ type Paragraph struct {
 
 //添加文章
 type ArticleDetailModel struct {
+	TypeId int64 //类型id
 	Article *Article //存入mysql
 	Paragraphs []Paragraph //存入mongo
 }

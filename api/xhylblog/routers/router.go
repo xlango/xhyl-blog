@@ -25,6 +25,11 @@ func init() {
 				&controllers.ArticleController{},
 			),
 		),
+		beego.NSNamespace("/type",
+			beego.NSInclude(
+				&controllers.ArticleTypeController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }

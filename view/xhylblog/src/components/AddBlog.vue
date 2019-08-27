@@ -11,13 +11,13 @@
                             <div class="row">
                                 <Form :model="formItem" :label-width="80">
                                     <FormItem label="标题：">
-                                        <Input v-model="formItem.input" placeholder="Enter something..." clearable></Input>
+                                        <Input v-model="formItem.input" placeholder="Title" clearable></Input>
                                     </FormItem>
                                     <FormItem label="类型：" style="width: 50%;">
-                                        <Select v-model="formItem.select">
-                                            <Option value="beijing">New York</Option>
-                                            <Option value="shanghai">London</Option>
-                                            <Option value="shenzhen">Sydney</Option>
+                                        <Select v-model="blog.TypeId" placeholder="请选择类型">
+                                            <Option v-for="t in types" v-bind:key="t.Id" v-bind:value="t.Id">
+                                                {{t.TypeName}}
+                                            </Option>
                                         </Select>
                                     </FormItem>
                                     <FormItem label="可见：">
@@ -132,6 +132,16 @@ import HeadNav from '@/components/HeadNav'
                     time: '',
                     slider: [20, 50],
                     textarea: ''
+                },
+                types:[],
+                blog:{
+                    TypeId:0,
+                    Article:{
+                        Title:"",
+                        Content:"Content",
+                        Image:"a.png"
+                    },
+                    Paragraphs:[]
                 }
             }
         },
@@ -158,7 +168,37 @@ import HeadNav from '@/components/HeadNav'
             },
             handleRemove (index) {
                 this.formDynamic.items[index].status = 0;
+            },
+            getArticleType(){
+                this.$fetch("/type",{
+                }).then(
+                    res => {
+                        if (res.Code == 200) {
+                            this.types=res.Msg
+                        }
+                    },
+                    err => {
+                     console.log(err);
+                    }
+                );
+            }, 
+            saveBlog() {
+                this.$post("/article", 
+                        this.blog
+                    ).then(
+                    res => {
+                        if (res.Code == 200) {
+                            alert("添加成功");
+                        }
+                    },
+                    err => {
+                        console.log(err);
+                    }
+                );
             }
+        },
+        mounted(){
+            this.getArticleType()
         }
     }
 </script>
