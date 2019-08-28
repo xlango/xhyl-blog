@@ -11,7 +11,7 @@
                             <div class="row">
                                 <Form :model="formItem" :label-width="80">
                                     <FormItem label="标题：">
-                                        <Input v-model="formItem.input" placeholder="Title" clearable></Input>
+                                        <Input v-model="blog.Article.Title" placeholder="Title" clearable></Input>
                                     </FormItem>
                                     <FormItem label="类型：" style="width: 50%;">
                                         <Select v-model="blog.TypeId" placeholder="请选择类型">
@@ -27,46 +27,47 @@
                                         </i-switch>
                                     </FormItem>
                                     <FormItem label="描述：">
-                                        <Input v-model="formItem.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..." clearable></Input>
+                                        <Input v-model="blog.Article.Content" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..." clearable></Input>
                                     </FormItem>
                                 </Form>
                             </div>
                         </Card>
                         <Card class="card container">
-                            <Form ref="formDynamic" :model="formDynamic" :label-width="80" style="width: 100;">
+                            <Form ref="Paragraphs" :model="Paragraphs" :label-width="80" style="width: 100;">
                               <FormItem
-                                      v-for="(item, index) in formDynamic.items"
+                                      v-for="(item, index) in Paragraphs.items"
                                       v-if="item.status"
                                       :key="index"
-                                      :label="'章节 ' + item.index"
-                                      :prop="'items.' + index + '.value'"
-                                      :rules="{required: true, message: 'Item ' + item.index +' can not be empty', trigger: 'blur'}">
+                                      :label="'章节 ' + item.index">
                                   <Row>
                                       <Col span="18">
-                                          <Input type="text" v-model="item.value" placeholder="请输入章节标题" clearable></Input>
+                                          <Input type="text" v-model="item.Title" placeholder="请输入章节标题" clearable></Input>
                                       </Col>
                                       <Col span="4" offset="1">
-                                          <Button @click="handleRemove(index)" type="error">删除</Button>
+                                          <Button @click="removeParagh(index)" type="error">删除</Button>
                                       </Col>
                                   </Row>
                                   <Row>
                                       <Col span="18">
-                                          <Input v-model="pcontent" type="textarea" :autosize="{minRows: 5,maxRows: 8}" placeholder="请输入章节内容" clearable></Input>
+                                          <Input v-model="item.Content" type="textarea" :autosize="{minRows: 5,maxRows: 8}" placeholder="请输入章节内容" clearable></Input>
                                       </Col>
                                   </Row>
                                   <Row>
+                                      <Col span="18">
+                                      
+                                      </Col>
                                   </Row>
                               </FormItem>
                               <FormItem>
                                   <Row>
                                       <Col span="12">
-                                          <Button type="dashed" long @click="handleAdd" icon="md-add">Add item</Button>
+                                          <Button type="dashed" long @click="addParagh" icon="md-add">Add item</Button>
                                       </Col>
                                   </Row>
                               </FormItem>
                               <FormItem>
-                                  <Button type="primary" @click="handleSubmit('formDynamic')">保存</Button>
-                                  <Button @click="handleReset('formDynamic')" style="margin-left: 8px">重置</Button>
+                                  <Button type="primary" @click="addBlog('Paragraphs')">保存</Button>
+                                  <Button @click="handleReset('Paragraphs')" style="margin-left: 8px">重置</Button>
                               </FormItem>
                           </Form>
                         </Card>
@@ -113,12 +114,14 @@ import HeadNav from '@/components/HeadNav'
         data () {
             return {
                 index: 1,
-                formDynamic: {
+                Paragraphs: {
                     items: [
                         {
-                            value: '',
+                            Title: '',
                             index: 1,
-                            status: 1
+                            status: 1,
+                            Content:"",
+                            Image:[]
                         }
                     ]
                 },
@@ -138,15 +141,29 @@ import HeadNav from '@/components/HeadNav'
                     TypeId:0,
                     Article:{
                         Title:"",
-                        Content:"Content",
-                        Image:"a.png"
+                        Content:"",
+                        Image:""
                     },
                     Paragraphs:[]
                 }
             }
         },
         methods: {
-            handleSubmit (name) {
+            addBlog (name) {
+                this.blog.Paragraphs=this.Paragraphs.items
+                console.log(this.blog)
+                this.$post("/article", 
+                        this.blog
+                    ).then(
+                    res => {
+                        if (res.Code == 200) {
+                             this.$Message.success("添加成功");
+                        }
+                    },
+                    err => {
+                        console.log(err);
+                    }
+                );
                 this.$refs[name].validate((valid) => {
                     if (valid) {
                         this.$Message.success('Success!');
@@ -158,16 +175,18 @@ import HeadNav from '@/components/HeadNav'
             handleReset (name) {
                 this.$refs[name].resetFields();
             },
-            handleAdd () {
+            addParagh () {
                 this.index++;
-                this.formDynamic.items.push({
-                    value: '',
+                this.Paragraphs.items.push({
+                    Title: '',
                     index: this.index,
-                    status: 1
+                    status: 1,
+                    Content:"",
+                    Image:[]
                 });
             },
-            handleRemove (index) {
-                this.formDynamic.items[index].status = 0;
+            removeParagh (index) {
+                this.Paragraphs.items[index].status = 0;
             },
             getArticleType(){
                 this.$fetch("/type",{
@@ -188,7 +207,7 @@ import HeadNav from '@/components/HeadNav'
                     ).then(
                     res => {
                         if (res.Code == 200) {
-                            alert("添加成功");
+                             this.$Message.success("添加成功");
                         }
                     },
                     err => {
