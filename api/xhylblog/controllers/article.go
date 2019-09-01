@@ -112,7 +112,7 @@ func (c *ArticleController) GetAll() {
 func (c *ArticleController) Put() {
 	idStr := c.Ctx.Input.Param(":id")
 	id, _ := strconv.ParseInt(idStr, 0, 64)
-	v := models.ArticleDetailModel{Article:&models.Article{Id:id} }
+	v := models.ArticleDetailModel{Article:models.Article{Id:id} }
 	c.JsonParam(&v)
 	if err := models.UpdateArticleDetailById(&v); err == nil {
 		c.Ok("OK")
@@ -132,7 +132,7 @@ func (c *ArticleController) Delete() {
 	idStr := c.Ctx.Input.Param(":id")
 	id, _ := strconv.ParseInt(idStr, 0, 64)
 	if err := models.DeleteArticle(id); err == nil {
-		c.Ok("OK")
+		c.Ok("删除成功！")
 	} else {
 		c.Error(err.Error())
 	}
@@ -149,7 +149,7 @@ func (c *ArticleController) Add() {
 	var v models.ArticleDetailModel
 	c.JsonParam(&v)
 	if err := models.AddArticleContentToMongo(&v); err == nil {
-		c.Ok(v)
+		c.Ok("添加成功！")
 	} else {
 		c.Error(err.Error())
 	}

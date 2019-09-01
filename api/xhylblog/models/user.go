@@ -12,15 +12,22 @@ import (
 
 type User struct {
 	Id       int64
-	Name     string    `orm:"size(255)"`
-	Username string    `orm:"size(255)"`
-	Password string    `orm:"size(255)"`
-	Birthday time.Time `orm:"type(datetime)"`
-	Gender   int `orm:"size(11)"`
-	Tel      string `orm:"size(255)"`
-	Email    string `orm:"size(255)"`
-	Address  string `orm:"size(255)"`
+	Name     string    `orm:"column(Name)","size(255)"`
+	Username string    `orm:"column(Username)","size(255)"`
+	Password string    `orm:"column(Password)","size(255)"`
+	Birthday time.Time `orm:"column(Birthday)","type(datetime)"`
+	Gender   int `orm:"column(Gender)","size(11)"`
+	Tel      string `orm:"column(Tel)","size(255)"`
+	Email    string `orm:"column(Email)","size(255)"`
+	Address  string `orm:"column(Address)","size(255)"`
+	Logo  string `orm:"column(Logo)","size(255)"`
 }
+
+type LoginResult struct {
+	User User
+	Token string
+}
+
 
 func init() {
 	//orm.RegisterModel(new(User))

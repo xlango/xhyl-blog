@@ -36,7 +36,12 @@ func (c *UserController) Login() {
 	var v models.User
 	c.JsonParam(&v)
 	if token, err := models.Login(v.Username,v.Password); err == nil {
-		c.Ok(token)
+		l, _ := models.GetAllUser(map[string]string{"Username":v.Username}, nil, nil, nil, 0, 0)
+		rs:=models.LoginResult{
+			User:l[0].(models.User),
+			Token:token,
+		}
+		c.Ok(rs)
 	} else {
 		c.RequestError("账号或密码错误！")
 	}

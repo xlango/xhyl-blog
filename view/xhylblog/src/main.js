@@ -19,6 +19,7 @@ import Login from '@/components/Login'
 import Me from '@/components/Me'
 import QuestionList from '@/components/QuestionList'
 import Registe from '@/components/Registe'
+import Test from '@/components/Test'
 
 
 //验证码
@@ -43,6 +44,7 @@ const router=new VueRouter({
     {path:"/registe",component:Registe},
     {path:"/me",component:Me},
     {path:"/question/list",component:QuestionList},
+    {path:"/test",component:Test},
   ],
   mode:"history"
 })

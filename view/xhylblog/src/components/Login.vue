@@ -114,7 +114,8 @@ export default {
                         if (res.Code == 200) {
                             this.loginSuccess="登录成功";
                             this.loginFail="";
-                            localStorage.setItem("token",res.Msg);
+                            localStorage.setItem("token",res.Msg.Token);
+                            localStorage.setItem("userId",res.Msg.User.Id);
                             this.$router.push({path:'/'})
                         }
                     },

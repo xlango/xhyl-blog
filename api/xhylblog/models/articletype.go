@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"fmt"
+	"github.com/astaxie/beego/logs"
 	"reflect"
 	"strings"
 
@@ -12,10 +13,17 @@ import (
 type ArticleType struct {
 	Id       int64
 	TypeName string `orm:"column(TypeName)","size(128)"`
+	Logo string `orm:"size(128)"`
+}
+
+type  ArticleTypeRelation struct {
+	Id int64
+	TypeId      int64 `orm:"column(TypeId)","size(20)"`
+	ArticleId      int64 `orm:"column(ArticleId)","size(20)"`
 }
 
 func init() {
-	orm.RegisterModelWithPrefix("tb_", new(ArticleType))
+	orm.RegisterModelWithPrefix("tb_", new(ArticleType),new(ArticleTypeRelation))
 }
 
 // AddArticleType insert a new ArticleType into database and returns
@@ -138,5 +146,23 @@ func DeleteArticleType(id int64) (err error) {
 			fmt.Println("Number of records deleted in database:", num)
 		}
 	}
+	return
+}
+
+
+//通过文章Id查询所有相关类型
+func GetArtcleTypesByArtcleId(id int64) (rs []ArticleType) {
+	o := orm.NewOrm()
+	_, err := o.Raw("SELECT a.TypeName as TypeName ,a.Logo as Logo FROM tb_article_type a LEFT JOIN tb_article_type_relation b on a.Id=b.TypeId WHERE b.ArticleId=?", id).QueryRows(&rs)
+	if err != nil {
+		logs.Error("article of",id," type no found ")
+	}
+	return
+}
+
+// 文章作者关联
+func ArticleAddType(m []ArticleTypeRelation)(num int,err error) {
+	o := orm.NewOrm()
+	_, err = o.InsertMulti(100,m)
 	return
 }

@@ -6,47 +6,35 @@
             <div class="col-md-7">
                 <div class="container-fluid">
                     <div class="row">
-                        <Card class="card container">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <img src="@/assets/avatar.png" style="width:20px;height:20px;margin:5px;border-radius:70%;"/>
-                                    <span style="margin:5px">张三</span>
-                                    <span style="margin:5px">2019-01-01 18:00:00</span>
+                        <div v-for="article in articleList" v-bind:key="article.Article.Id">
+                            <Card class="card container">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <img src="@/assets/avatar.png" style="width:20px;height:20px;margin:5px;border-radius:70%;"/>
+                                        <span style="margin:5px">{{article.Author.Name}}</span>
+                                        <span style="margin:5px">{{article.Article.CreateTime}}</span>
+                                    </div>
+                                    <div class="col-md-4"><Icon type="ios-megaphone-outline" style="float:right;"/></div>
                                 </div>
-                                <div class="col-md-4"><Icon type="ios-megaphone-outline" style="float:right;"/></div>
-                            </div>
-                            <div class="row">
-                                <h4 class="col-md-8" style="margin:7px;font-weight:bold;">博客标题</h4>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-8"><span style="margin:9px;">预览内容。</span></div>
-                                <div class="col-md-4"><img src="@/assets/logo.png" style="width:80px;height:80px;margin:5px;float:right;"/></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-11">
-                                    <button class="btntype"><img src="@/assets/logo.png" style="width:13px;height:13px;margin:2px;"/>vue</button>
-                                    <button class="btntype"><img src="https://file.iviewui.com/dev/tag/tag-weapp.png" style="width:13px;height:13px;margin:2px;"/>小程序</button>
+                                <div class="row">
+                                    <h4 class="col-md-8" style="margin:7px;font-weight:bold;">{{article.Article.Title}}</h4>
                                 </div>
-                                <div class="col-md-1" style="color:green;margin-top:15px;" align="right" title="共回复2条">
-                                    <Icon type="ios-chatbubbles" /><span style="font-size: 12px;margin:2px;" >2</span>
+                                <div class="row">
+                                    <div class="col-md-8"><span style="margin:9px;">{{article.Article.Content}}</span></div>
+                                    <div class="col-md-4"><img src="@/assets/logo.png" style="width:80px;height:80px;margin:5px;float:right;"/></div>
                                 </div>
-                                
-                            </div>
-                        </Card>
-                        <Card class="card">
-                            <div style="text-align:center">
-                                <div>
-
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <button class="btntype"><img src="@/assets/logo.png" style="width:13px;height:13px;margin:2px;"/>vue</button>
+                                        <button class="btntype"><img src="https://file.iviewui.com/dev/tag/tag-weapp.png" style="width:13px;height:13px;margin:2px;"/>小程序</button>
+                                    </div>
+                                    <div class="col-md-2" style="color:green;margin-top:15px;" align="right" title="共回复2条">
+                                        <Icon type="ios-chatbubbles" /><span style="font-size: 12px;margin:2px;" >2</span>
+                                    </div>
+                                    
                                 </div>
-                                
-                            </div>
-                        </Card>
-                        <Card class="card">
-                            <div style="text-align:center">
-                                
-                                
-                            </div>
-                        </Card>
+                            </Card>
+                        </div>
                         <Button class="btnmore" title="点击加载更多"><Icon type="md-arrow-down" /></Button>
                     </div>
                 </div>
@@ -89,13 +77,28 @@ export default {
   data () {
             return {
                 nowTime:new Date().toLocaleString(),
+                articleList:[],
             }
         },
 		methods:{
-
+            getArticleList(){
+                this.$fetch("/article",{
+                    limit:10,
+                    offset:1
+                }).then(
+                    res => {
+                        if (res.Code == 200) {
+                            this.articleList=res.Msg
+                        }
+                    },
+                    err => {
+                     console.log(err);
+                    }
+                );
+            }, 
 		},
 		mounted(){
-
+            this.getArticleList()
 		}
 };
 </script>

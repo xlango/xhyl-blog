@@ -14,7 +14,7 @@
                                         <Input v-model="blog.Article.Title" placeholder="Title" clearable></Input>
                                     </FormItem>
                                     <FormItem label="类型：" style="width: 50%;">
-                                        <Select v-model="blog.TypeId" placeholder="请选择类型">
+                                        <Select v-model="selectTypeId" placeholder="请选择类型">
                                             <Option v-for="t in types" v-bind:key="t.Id" v-bind:value="t.Id">
                                                 {{t.TypeName}}
                                             </Option>
@@ -47,14 +47,27 @@
                                           <Button @click="removeParagh(index)" type="error">删除</Button>
                                       </Col>
                                   </Row>
-                                  <Row>
+                                  <Row style="margin-top:10px;">
                                       <Col span="18">
                                           <Input v-model="item.Content" type="textarea" :autosize="{minRows: 5,maxRows: 8}" placeholder="请输入章节内容" clearable></Input>
                                       </Col>
                                   </Row>
-                                  <Row>
+                                  <Row style="margin-top:10px;">
                                       <Col span="18">
-                                      
+                                        <Upload
+                                            ref="upload"
+                                            :show-upload-list="false"
+                                            :default-file-list="defaultList"
+                                            :format="['jpg','jpeg','png']"
+                                            :max-size="2048"
+                                            multiple
+                                            type="drag"
+                                            action="//jsonplaceholder.typicode.com/posts/"
+                                            style="display: inline-block;width:58px;">
+                                            <div style="width: 58px;height:58px;line-height: 58px;">
+                                                <Icon type="ios-camera" size="20"></Icon>
+                                            </div>
+                                        </Upload>
                                       </Col>
                                   </Row>
                               </FormItem>
@@ -137,8 +150,10 @@ import HeadNav from '@/components/HeadNav'
                     textarea: ''
                 },
                 types:[],
+                selectTypeId:0,
                 blog:{
-                    TypeId:0,
+                    TypeId:[],
+                    AuthorId:0,
                     Article:{
                         Title:"",
                         Content:"",
@@ -150,7 +165,10 @@ import HeadNav from '@/components/HeadNav'
         },
         methods: {
             addBlog (name) {
+                console.log("作者：",localStorage.getItem("userId"))
+                this.blog.AuthorId=parseInt(localStorage.getItem("userId"))
                 this.blog.Paragraphs=this.Paragraphs.items
+                this.blog.TypeId.push(this.selectTypeId)
                 console.log(this.blog)
                 this.$post("/article", 
                         this.blog
