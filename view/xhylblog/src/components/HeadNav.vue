@@ -90,6 +90,7 @@ export default {
       setTimeout(() => {
         this.$Spin.hide();
         localStorage.removeItem("token");
+        localStorage.removeItem("userId");
       this.$router.push({ path: "/login" });
       }, 2000);
     }

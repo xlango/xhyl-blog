@@ -116,7 +116,7 @@ export default {
                             this.loginFail="";
                             localStorage.setItem("token",res.Msg.Token);
                             localStorage.setItem("userId",res.Msg.User.Id);
-                            this.$router.push({path:'/'})
+                            this.$router.push(this.$route.query.redirect);
                         }
                     },
                     err => {

@@ -7,7 +7,7 @@ axios.defaults.baseURL ='http://localhost:8000/xhyl';
 //http request 拦截器
 axios.interceptors.request.use(
  config => {
-  const token = localStorage.getItem("token");//注意使用的时候需要引入cookie方法，推荐js-cookie
+  const token = localStorage.getItem("token");
   config.data = JSON.stringify(config.data);
   config.headers = {
    'Content-Type':'application/x-www-form-urlencoded'
@@ -96,6 +96,7 @@ export function patch(url,data = {}){
      .then(response => {
       resolve(response.data);
      },err => {
+         console.log("错误",err);
       reject(err)
      })
  })
