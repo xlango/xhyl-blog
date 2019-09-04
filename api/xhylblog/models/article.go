@@ -7,8 +7,8 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"reflect"
 	"strings"
-	"time"
 	"xhylblog/dbconn"
+	"xhylblog/utils"
 
 	"github.com/astaxie/beego/orm"
 )
@@ -20,7 +20,7 @@ type Article struct {
 	Title   string `orm:"size(255)"`
 	Content string `orm:"size(255)"`
 	Image   string `orm:"size(255)"`
-	CreateTime   time.Time `orm:"column(CreateTime)","type(datetime)"`
+	CreateTime   utils.Time `orm:"column(CreateTime)","type(datetime)"`
 }
 
 type UserArticleRelation struct {

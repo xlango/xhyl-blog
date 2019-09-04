@@ -42,7 +42,7 @@ const router=new VueRouter({
     // {path:"/article/list",component:BlogList},
     {path:"/login",component:Login},
     {path:"/registe",component:Registe},
-    {path:"/me",component:Me},
+    {path:"/me",component:Me,meta:{requireAuth:true}},
     {path:"/question/list",component:QuestionList},
     {path:"/test",component:Test},
   ],

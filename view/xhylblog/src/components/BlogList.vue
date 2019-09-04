@@ -25,8 +25,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-10">
-                                        <button class="btntype"><img src="@/assets/logo.png" style="width:13px;height:13px;margin:2px;"/>vue</button>
-                                        <button class="btntype"><img src="https://file.iviewui.com/dev/tag/tag-weapp.png" style="width:13px;height:13px;margin:2px;"/>小程序</button>
+                                        <span v-for="(t,index) in article.ArticleTypes" v-bind:key="index">
+                                            <button class="btntype"><img src="@/assets/logo.png" style="height:13px;margin:2px;"/>{{t.TypeName}}</button>
+                                            <!-- <button class="btntype"><img src="https://file.iviewui.com/dev/tag/tag-weapp.png" style="height:13px;margin:2px;"/>小程序</button> -->
+                                        </span>
                                     </div>
                                     <div class="col-md-2" style="color:green;margin-top:15px;" align="right" title="共回复2条">
                                         <Icon type="ios-chatbubbles" /><span style="font-size: 12px;margin:2px;" >2</span>
@@ -42,7 +44,9 @@
             </div>
             <div class="col-md-3">
                 <Card class="card-slider">
-                    <Input suffix="ios-search" placeholder="搜索" style="width: 100%" />
+                    <Input placeholder="搜索" style="width: 100%" v-model="searchQuery" @keyup.enter.native="getArticleListByTitle" clearable>
+                        <Icon type="ios-search" slot="prefix" @click="getArticleListByTitle" />
+                    </Input>
                 </Card>
                 <Card class="card-slider">
                     <DatePicker :value="nowTime" format="yyyy年MM月dd日" type="date" placeholder="Select date" style="width: 100%;"></DatePicker>
@@ -78,6 +82,7 @@ export default {
             return {
                 nowTime:new Date().toLocaleString(),
                 articleList:[],
+                searchQuery: "",
             }
         },
 		methods:{
@@ -95,6 +100,27 @@ export default {
                      console.log(err);
                     }
                 );
+            }, 
+            getArticleListByTitle(){
+                if(this.searchQuery){
+                    this.$fetch("/article",{
+                        query:"Title:"+this.searchQuery,
+                        limit:10,
+                        offset:1
+                    }).then(
+                        res => {
+                            if (res.Code == 200) {
+                                this.articleList=res.Msg
+                            }
+                        },
+                        err => {
+                        console.log(err);
+                        }
+                    );
+                }else{
+                    this.getArticleList()
+                }
+                
             }, 
 		},
 		mounted(){
