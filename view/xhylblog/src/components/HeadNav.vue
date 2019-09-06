@@ -12,7 +12,7 @@
               <div class="col-md-1"><router-link to='/article/add' tag="div" exact><div>文章</div></router-link></div>
               <div class="col-md-1"><router-link to='/question/list' tag="div" exact><div>提问</div></router-link></div>
               <div class="col-md-1"><router-link to='/b' tag="div" exact><div>相册</div></router-link></div>
-              <div class="col-md-1"><router-link to='/b' tag="div" exact><div>归档</div></router-link></div>
+              <div class="col-md-1"><router-link to='/archive' tag="div" exact><div>归档</div></router-link></div>
             </div>
           </div>
         </div>
@@ -50,7 +50,7 @@
                       <DropdownItem><router-link to='/circle/add' tag="span" exact>写文章</router-link></DropdownItem>
                       <DropdownItem><router-link to='/question/add' tag="span" exact>提问题</router-link></DropdownItem>
                       <DropdownItem><router-link to='/photo/add' tag="span" exact>传相册</router-link></DropdownItem>
-                      <DropdownItem><router-link to='/archive/add' tag="span" exact>归档</router-link></DropdownItem>
+                      <DropdownItem><router-link to='/archive' tag="span" exact>归档</router-link></DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
                 

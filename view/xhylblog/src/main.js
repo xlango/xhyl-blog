@@ -19,6 +19,7 @@ import Login from '@/components/Login'
 import Me from '@/components/Me'
 import QuestionList from '@/components/QuestionList'
 import Registe from '@/components/Registe'
+import Archive from '@/components/Archive'
 import Test from '@/components/Test'
 
 
@@ -45,6 +46,7 @@ const router=new VueRouter({
     {path:"/me",component:Me,meta:{requireAuth:true}},
     {path:"/question/list",component:QuestionList},
     {path:"/test",component:Test},
+    {path:"/archive",component:Archive},
   ],
   mode:"history"
 })

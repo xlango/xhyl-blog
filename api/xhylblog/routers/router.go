@@ -30,6 +30,16 @@ func init() {
 				&controllers.ArticleTypeController{},
 			),
 		),
+		beego.NSNamespace("/file",
+			beego.NSInclude(
+				&controllers.FileController{},
+			),
+		),
+		beego.NSNamespace("/message",
+			beego.NSInclude(
+				&controllers.MessageController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }

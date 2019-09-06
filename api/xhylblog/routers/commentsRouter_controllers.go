@@ -97,6 +97,33 @@ func init() {
             Filters: nil,
             Params: nil})
 
+    beego.GlobalControllerRouter["xhylblog/controllers:FileController"] = append(beego.GlobalControllerRouter["xhylblog/controllers:FileController"],
+        beego.ControllerComments{
+            Method: "Download",
+            Router: `/download/:filename`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["xhylblog/controllers:FileController"] = append(beego.GlobalControllerRouter["xhylblog/controllers:FileController"],
+        beego.ControllerComments{
+            Method: "Upload",
+            Router: `/upload`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["xhylblog/controllers:MessageController"] = append(beego.GlobalControllerRouter["xhylblog/controllers:MessageController"],
+        beego.ControllerComments{
+            Method: "Email",
+            Router: `/email`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
     beego.GlobalControllerRouter["xhylblog/controllers:UserController"] = append(beego.GlobalControllerRouter["xhylblog/controllers:UserController"],
         beego.ControllerComments{
             Method: "GetAll",
