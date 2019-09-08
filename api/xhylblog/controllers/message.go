@@ -1,6 +1,6 @@
 package controllers
 
-import "xhylblog/utils"
+import "xhylblog/service"
 
 //  邮件短信提醒
 type MessageController struct {
@@ -20,5 +20,6 @@ func (c *MessageController) URLMapping() {
 // @Failure 403 :id is empty
 // @router /email [get]
 func (c *MessageController) Email() {
-	utils.WsHandler(c.Ctx.ResponseWriter, c.Ctx.Request)
+	service:=&service.MessageServcie{}
+	service.WsHandler(c.Ctx.ResponseWriter, c.Ctx.Request)
 }
