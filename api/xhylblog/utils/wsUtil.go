@@ -156,22 +156,22 @@ type WsConnection struct {
 /**
 websocket消息处理
  */
-func GetWsConn(resp http.ResponseWriter, req *http.Request) (wsConn WsConnection){
+func GetWsConn(resp http.ResponseWriter, req *http.Request) (wsConn WsConnection,err error){
 	//如果客户端创建websocket连接超过最大数量则阻塞
 	MaxConnChannel <- struct{}{}
 	// 应答客户端告知升级连接为websocket
-	WsSocket, err := WsUpgrader.Upgrade(resp, req, nil)
+	wsSocket, err := WsUpgrader.Upgrade(resp, req, nil)
 	if err != nil {
 		return
 	}
 	wsConn = WsConnection{
-		WsSocket: WsSocket,
+		WsSocket: wsSocket,
 		InChan: make(chan *WsMessage, 1000),
 		OutChan: make(chan *WsMessage, 1000),
 		CloseChan: make(chan byte),
 		IsClosed: false,
 	}
-	return wsConn
+	return wsConn,nil
 }
 
 func (wsConn *WsConnection)WsWrite(messageType int, data []byte) error {

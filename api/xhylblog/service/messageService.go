@@ -86,8 +86,6 @@ func (this *MessageServcie)procLoop(wsConn utils.WsConnection) {
 			}
 		}
 	}()
-
-
 }
 
 
@@ -96,7 +94,7 @@ websocket消息处理
 */
 func (this *MessageServcie)WsHandler(resp http.ResponseWriter, req *http.Request) {
 
-	wsConn := utils.GetWsConn(resp,req)
+	wsConn,_ := utils.GetWsConn(resp,req)
 	// 处理器
 	go this.procLoop(wsConn)
 	// 读协程

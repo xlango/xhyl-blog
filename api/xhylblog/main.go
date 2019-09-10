@@ -1,11 +1,10 @@
 package main
 
 import (
+	"github.com/astaxie/beego"
 	_ "github.com/go-sql-driver/mysql"
 	_ "xhylblog/routers"
 	"xhylblog/utils"
-
-	"github.com/astaxie/beego"
 )
 
 func main() {
@@ -27,3 +26,4 @@ func main() {
 
 	beego.Run()
 }
+
