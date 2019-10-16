@@ -1,0 +1,156 @@
+http://192.168.10.6/ilink-cloud/installpackage/tree/master
+易源数据：https://www.showapi.com/console#/myApp
+
+疾病查询
+767248463@qq.com
+lpc32198.
+健康知识
+lpcll
+123456
+
+mysql拼音匹配汉字
+https://blog.csdn.net/FiangAsDre/article/details/77050656
+
+
+config = {
+    _id : "configs",
+     members : [
+         {_id : 0, host : "192.168.10.28:40000" },
+         {_id : 1, host : "192.168.10.28:40001" },
+         {_id : 2, host : "192.168.10.28:40002" }
+     ]
+}
+shard2
+config = {
+    _id : "shard2
+     members : [
+         {_id : 0, host : "192.168.10.28:27019" }
+     ]
+}
+
+config = {
+    _id : "shard2",
+     members : [
+         {_id : 0, host : "192.168.10.28:27016" }
+     ]
+}
+
+rs.initiate(config)
+
+
+192.168.10.28:7001,192.168.10.29:7001,192.168.10.31:7001,192.168.10.28:7002,192.168.10.28:7003,192.168.10.29:7001,192.168.10.29:7002,192.168.10.29:7003,192.168.10.31:7002,192.168.10.31:7003
+
+show full processlist;
+http://192.168.10.28:9200/_cat/indices?v
+
+kong migrations up [-c /etc/kong/kong.conf]
+
+protoc --go_out=plugins=grpc:. *.proto
+
+
+https://blog.csdn.net/geerniya/article/details/79552247
+git
+git init
+git add .
+git commit -m 'the initial edition'
+git remote add origin https://github.com/geerniya/MxShop2.git
+git pull --rebase origin master
+git push -u origin master
+clone history version: git checkout verison f8c25ad6ce8a4a61fb2f6f6315d421e14e2590e9
+
+
+
+ngrok http -region ap 8082
+
+
+tcpdump -i em1 tcp port 7001 -w em1.pcap -s0
+tcpdump -i eth0 tcp port 1883 -A
+
+docker build -t 镜像名字 . 
+
+
+
+docker images
+docker run -d --name 容器名字 -p 端口：端口 镜像
+
+
+
+./simulator -a 192.168.10.28 -t 9000 -b 00:14:10:00:00:01 -s 3 -v 30 -B 4 -sta 10000 -ap 100 -hs 3
+
+port 26382
+dir "/tmp"
+daemonize yes
+protected-mode no
+logfile "/home/gopath/src/github.com/CodisLabs/codis/sentinel-6382.log"
+sentinel monitor mymaster 192.168.10.31 6382 1
+sentinel failover-timeout mymaster  300000
+
+
+virt-install --name=x01 --memory=50000,maxmemory=52000 --vcpus=8,maxvcpus=8 --os-type=linux --os-variant=rhel7 --location=/home/kvm/CentOS-7-x86_64-Minimal-1611.iso --disk path=/home/kvm_data/x01.img,size=1000 --bridge=br0 --graphics=none --console=pty,target_type=serial  --extra-args="console=tty0 console=ttyS0"
+
+virsh console study01
+virsh shutdown study01
+virsh undefine study01
+
+systemctl stop firewalld
+vi /etc/sysconfig/network-scripts/ifcfg-eth0
+
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=static
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME=eth0
+UUID=cecd08fd-8b24-4908-893f-2abce9a5a52a
+DEVICE=eth0
+ONBOOT=yes
+IPADDR=192.168.10.108
+GATEWAY=192.168.10.1
+NETMASK=255.255.255.0
+DNS=114.114.114.114
+ 
+systemctl restart network
+
+/root/kvm
+virsh list --all
+virsh destroy 虚拟机名字
+cp xxx.bak xxx.img
+virsh start 虚拟机名字
+
+47.103.41.85
+ilinkcloud.com.cn00002018
+
+systemctl stop firewalld.service #停止
+firewall 
+systemctl disable firewalld.service #禁止firewall开机启动 
+
+systemctl status firewalld.service #查看firewall的状态
+
+
+
+./install.sh /home 192.168.10.234 eth0 22
+
+kubectl get hpa
+kubectl delete -f
+kubectl create -f
+kubectl delete pods  $(kubectl get  pods  --all-namespaces -o wide|grep "Evicted"|awk '{print $2}')
+kubectl delete pods  $(kubectl get  pods  --all-namespaces -o wide|grep "Running"|awk '{print $2}') --grace-period=0 --force --all -namespace
+
+protoc --csharp_out=./ dpi_app.proto
+
+$codisdir/bin/codis-admin --dashboard=$ipaddr:18080 --promote-server --gid=1 --addr=$ipaddr:6379
+
+
+"username": qlink,
+        "password": qlink.com%!abc
+https://docs.qq.com/sheet/DTnlGRXhLWkxVT2Va?preview_token=&t=1565142963545&coord=D3A0A0&tab=BB08J2
+
+
+bee generate scaffold Article -fields="Id:int64,TypeName:string" -conn="root:123456@tcp(127.0.0.1:3306)/xhylblog"
+bee pack -be GOOS=linux

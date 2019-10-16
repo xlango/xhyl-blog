@@ -29,6 +29,13 @@ func InitMysql()  {
 	orm.RegisterDataBase("default", "mysql", beego.AppConfig.String("sqlconn"),30,30)
 }
 
+//初始化postgresql数据库
+func InitPostgreSql()  {
+	//postgresql注册
+	orm.RegisterDriver("postgres", orm.DRPostgres) // 注册驱动
+	orm.RegisterDataBase("default", "postgres", "postgres://fusionpbx:mypassword@192.168.10.250:5432/fusionpbx?sslmode=disable")
+}
+
 //初始化swagger
 func InitSwagger()  {
 	//swagger生成
